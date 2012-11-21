@@ -6,7 +6,15 @@ use Mojo::Collection;
 use File::Fetch;
 use File::Copy qw(move);
 
-main(2010, 2012);
+my $num_args = $#ARGV + 1;
+if ($num_args == 1) {
+    $ARGV[1] = $ARGV[0];
+}
+if ($num_args < 1 || $ARGV[0] > $ARGV[1]) {
+    die "Starting year cannot be greater than ending year.\n";
+}
+
+main($ARGV[0], $ARGV[1]);
 
 sub main {
     print "Hello world!\n";
@@ -30,10 +38,12 @@ sub main {
     }
 
     cleanUp();
+    print "Done.\n";
 }
 
 sub cleanUp {
-    unlink -e "temp.txt";
+    print "Cleaning up...";
+    unlink "temp.txt";
 }
 sub downloadFile {
     my $file = $_[0];
@@ -94,5 +104,5 @@ sub processDownloadedFile {
         }
     }
     close (MYFILE);
-    print "+ Done!";
+    print "+ Done!\n";
 }
